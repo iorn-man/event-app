@@ -39,7 +39,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Configure static files
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!require('fs').existsSync(uploadsDir)) {
+    require('fs').mkdirSync(uploadsDir, { recursive: true });
+}
 
 // Routes for the Admin section
 const adminRoutes = require("./routes/adminRoutes");
